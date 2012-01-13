@@ -57,14 +57,20 @@ module Version
           list << [name, version]
         end
       end
-      list.sort
+
+      list.sort!{ |a,b| b[1] <=> a[1] }
     end
 
     #
     # TODO: support resolution of multiple [name, versions] at once.
     #
     def resolve(name, number)
-      resolve_(name, number)
+      name   = name.to_s
+      number = Number.parse(number)
+
+      sheet = {}
+
+      result = resolve_(name, number, sheet)
 
       #list.each do |name, version|
       #  name   = name.to_s
@@ -72,7 +78,7 @@ module Version
       #
       #  resolve_(name, number, sheet)
       #end
-      #sheet
+      result ? sheet : nil
     end
 
   private
@@ -86,6 +92,8 @@ module Version
       potents = requirements(name, number).map do |(n, c)|
                   possibilities(n,c)
                 end
+
+      return sheet if potents.empty?
 
       vectors = product(*potents)
 

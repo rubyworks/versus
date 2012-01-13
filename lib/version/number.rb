@@ -1,5 +1,12 @@
 module Version
 
+  #
+  # Shortcut for `Version::Number.parse()`.
+  #
+  def self.[](number)
+    Number.parse(number)
+  end
+
   # Represents a versiou number. Developer SHOULD use three point 
   # SemVer standard, but this class is mildly flexible in it's support
   # for variations.
