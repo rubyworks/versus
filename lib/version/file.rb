@@ -28,10 +28,18 @@ module Version
     #
     # Get current version by look-up of version file.
     #
+    # If +path+ is nil, then caller is used to automatically set
+    # the look-up path. This allows for some very cool code-fu 
+    # for those who keep their project version is a project file:
+    #
+    #     module MyApp
+    #       VERSION = Version::File.current
+    #     end
+    # 
     # @return [Version::Number] version number
     #
     def self.current(path=nil)
-      vfile = lookup(path)
+      vfile = lookup(path || File.dirname(caller.first))
       vfile.version if vfile
     end
 
@@ -50,7 +58,7 @@ module Version
                  version_file(path)
                end
              else
-               version_file(caller.first)
+               version_file(Dir.pwd)
              end
 
       return nil unless file && ::File.file?(file)
