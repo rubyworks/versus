@@ -8,63 +8,127 @@ module Version
     #
     #
     #
-    def intialize(available=[])
-      @libraries = []
-      @versions  = Hash.new{ |h,k| h[k] = [] }
+    def initialize(*available)
+      @libraries = Hash.new{ |h,k| h[k] = {} }
 
       available.each do |name, version, requirements|
-        add(name, version, requirements)
+        add(name, version, requirements || {})
       end
     end
 
     #
-    # List of library name, version and requirements.
+    # Map of dependencies by name and version to requirements.
     #
     attr :libraries
 
     #
-    # Keep an index of library versions by name.
-    # 
-    attr :versions
-
-    #
     # Add available library.
     #
-    def add(name, version, requirements)
-      name   = name.to_s
-      number = Number.parse(version)
-      reqs   = requirements.map{ |(n,c)| [n.to_s, Constraint.parse(c)] }
+    def add(name, version, requirements={})
+      name     = name.to_s
+      number   = Number.parse(version)
+      requires = {}
 
-      @libraries << [name, number, reqs]
-      @versions[name] << number
-    end
-
-    #
-    #
-    #
-    def resolve(list)
-      list.each do |name, version|
-        name   = name.to_s
-        number = Number.parse(version)
-
-        whatif = {}
-
+      requirements.each do |n,c|
+        requires[n.to_s] = Constraint.parse(c)
       end
+
+      @libraries[name][number] = requires
     end
 
     #
+    # Look-up requirements for a given name and version.
     #
+    def requirements(name, number)
+      number = Version::Number.parse(number) #unless Version::Number === number
+      @libraries[name][number]
+    end
+
     #
-    def resolve_(name, number, whatif)
-      possibilites[[name, number]].each do |name, possibles|
-        if whatif[name]
-          whatif[name] = whatif[name] && possibles
-        else
-          whatif[name] = possibles
+    # Returns possibilities sorted in descending order.
+    #
+    def possibilities(name, constraint)
+      name       = name.to_s
+      constraint = Constraint.parse(constraint)
+
+      list = []
+      @libraries[name].each do |version, _|
+        if constraint.match?(version)
+          list << [name, version]
         end
       end
+      list.sort
     end
 
+    #
+    # TODO: support resolution of multiple [name, versions] at once.
+    #
+    def resolve(name, number)
+      resolve_(name, number)
+
+      #list.each do |name, version|
+      #  name   = name.to_s
+      #  number = Number.parse(version)
+      #
+      #  resolve_(name, number, sheet)
+      #end
+      #sheet
+    end
+
+  private
+
+    #
+    #
+    #
+    def resolve_(name, number, sheet={})
+      return false unless settle(name, number, sheet)
+
+      potents = requirements(name, number).map do |(n, c)|
+                  possibilities(n,c)
+                end
+
+      vectors = product(*potents)
+
+      success = vectors.find do |vector|
+                  resolve_vector(vector, sheet)
+                end
+
+      return success
+    end
+
+    #
+    #
+    #
+    def resolve_vector(vector, sheet)
+      vector.each do |(n,v)|
+        r = resolve_(n, v, sheet)
+        return false unless r
+      end
+      return sheet
+    end
+
+    #
+    #
+    #
+    def settle(name, number, sheet={})
+      if sheet[name]
+        return false if sheet[name] != number
+      else
+        sheet[name] = number
+      end
+      return true
+    end
+
+    #
+    #
+    #
+    def product(*list)
+      return [] if list.empty?
+      head, *rest = *list
+      head.product(*rest)
+    end
+
+=begin
     #
     #
     #
@@ -101,11 +165,11 @@ module Version
       vers = @versions[name].select{ |v| constraint.fits?(v) }.sort
       vers.map{ |v| [name, v] }
     end
+=end
 
 
 
-
-
+=begin
     # Resolve dependencies for given list of name-version.
     #
     # @param [Array] list
@@ -162,6 +226,7 @@ module Version
       end
       cons
     end
+=end
 
     #
     #

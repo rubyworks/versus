@@ -1,7 +1,8 @@
-module DotRuby
-  module Version
-    # Base calss for all version errors.
-    class Exception < RuntimeError
-    end
+module Version
+
+  # Base calss for all version errors.
+  class Exception < RuntimeError
   end
+
 end
+

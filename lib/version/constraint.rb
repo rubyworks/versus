@@ -1,130 +1,128 @@
-module DotRuby
+module Version
 
-  module Version
+  # The Constraint class models a single version equality or inequality.
+  # It consists of the operator and the version number.
+  #--
+  # TODO: Please improve me!
+  #
+  # TODO: This should ultimately replace the class methods of Version::Number.
+  #
+  # TODO: Do we need to support version "from-to" spans ?
+  #++
+  class Constraint
 
-    # The Constraint class models a single version equality or inequality.
-    # It consists of the operator and the version number.
+    #
+    def self.parse(constraint)
+      new(constraint)
+    end
+
+    #
+    def self.[](operator, number)
+      new([operator, number])
+    end
+
+    #
+    def initialize(constraint)
+      @operator, @number = parse(constraint || '0+')
+
+      case constraint
+      when Array
+        @stamp = "%s %s" % [@operator, @number]
+      when String
+        @stamp = constraint || '0+'
+      end
+    end
+
+    # Constraint operator.
+    attr :operator
+
+    # Verison number.
+    attr :number
+
+    #
+    def to_s
+      @stamp
+    end
+
+    # Converts the version into a constraint string recognizable
+    # by RubyGems.
     #--
-    # TODO: Please improve me!
-    #
-    # TODO: This should ultimately replace the class methods of Version::Number.
-    #
-    # TODO: Do we need to support version "from-to" spans ?
+    # TODO: Better name Constraint#to_s2.
     #++
-    class Constraint
+    def to_gem_version
+      op = (operator == '=~' ? '~>' : operator)
+      "%s %s" % [op, number]
+    end
 
-      #
-      def self.parse(constraint)
-        new(constraint)
-      end
-
-      #
-      def self.[](operator, number)
-        new([operator, number])
-      end
-
-      #
-      def initialize(constraint)
-        @operator, @number = parse(constraint || '0+')
-
-        case constraint
-        when Array
-          @stamp = "%s %s" % [@operator, @number]
-        when String
-          @stamp = constraint || '0+'
-        end
-      end
-
-      # Constraint operator.
-      attr :operator
-
-      # Verison number.
-      attr :number
-
-      #
-      def to_s
-        @stamp
-      end
-
-      # Converts the version into a constraint string recognizable
-      # by RubyGems.
-      #--
-      # TODO: Better name Constraint#to_s2.
-      #++
-      def to_gem_version
-        op = (operator == '=~' ? '~>' : operator)
-        "%s %s" % [op, number]
-      end
-
-      #
-      # Convert constraint to Proc object which can be
-      # used to test a version number.
-      #
-      def to_proc
-        lambda do |v|
-          n = Version::Number.parse(v)
-          n.send(operator, number)
-        end
-      end
-
-      #
-      def call(v)
+    #
+    # Convert constraint to Proc object which can be
+    # used to test a version number.
+    #
+    def to_proc
+      lambda do |v|
         n = Version::Number.parse(v)
         n.send(operator, number)
       end
+    end
 
-      # better name?
-      alias :fits? :call
+    #
+    def call(v)
+      n = Version::Number.parse(v)
+      n.send(operator, number)
+    end
 
-    private
+    # better name?
+    alias :match? :call
 
-      #
-      def parse(constraint)
-        case constraint
-        when Array
-          op, num = constraint
-        when /^(.*?)\~$/
-          op, val = "=~", $1
-        when /^(.*?)\+$/
-          op, val = ">=", $1
-        when /^(.*?)\-$/
-          op, val = "<", $1
-        when /^(=~|~>|<=|>=|==|=|<|>)?\s*(\d+(:?[-.]\w+)*)$/
-          if op = $1
-            op = '=~' if op == '~>'
-            op = '==' if op == '='
-            val = $2.split(/\W+/)
-          else
-            op = '=='
-            val = constraint.split(/\W+/)
-          end
+  private
+
+    #
+    def parse(constraint)
+      case constraint
+      when Constraint
+        op, val = constraint.operator, constraint.number
+      when Array
+        op, num = constraint
+      when /^(.*?)\~$/
+        op, val = "=~", $1.strip
+      when /^(.*?)\+$/
+        op, val = ">=", $1.strip
+      when /^(.*?)\-$/
+        op, val = "<", $1
+      when /^(=~|~>|<=|>=|==|=|<|>)?\s*(\d+(:?[-.]\w+)*)$/
+        if op = $1
+          op = '=~' if op == '~>'
+          op = '==' if op == '='
+          val = $2.split(/\W+/)
         else
-          raise ArgumentError #constraint.split(/\s+/)
+          op = '=='
+          val = constraint.split(/\W+/)
         end
-        return op, Version::Number.new(*val)
+      else
+        raise ArgumentError #constraint.split(/\s+/)
       end
+      return op, Version::Number.new(*val)
+    end
 
-      # Parse package entry into name and version constraint.
-      #def parse(package)
-      #  parts = package.strip.split(/\s+/)
-      #  name = parts.shift
-      #  vers = parts.empty? ? nil : parts.join(' ')
-      # [name, vers]
-      #end
+    # Parse package entry into name and version constraint.
+    #def parse(package)
+    #  parts = package.strip.split(/\s+/)
+    #  name = parts.shift
+    #  vers = parts.empty? ? nil : parts.join(' ')
+    # [name, vers]
+    #end
 
-    public
+  public
 
-      # Parses a string constraint returning the operation as a lambda.
-      def self.constraint_lambda(constraint)
-        new(constraint).to_proc
-      end
+    # Parses a string constraint returning the operation as a lambda.
+    def self.constraint_lambda(constraint)
+      new(constraint).to_proc
+    end
 
-      # Parses a string constraint returning the operator and value.
-      def self.parse_constraint(constraint)
-        c = new(constraint)
-        return c.operator, c.number
-      end
-
+    # Parses a string constraint returning the operator and value.
+    def self.parse_constraint(constraint)
+      c = new(constraint)
+      return c.operator, c.number
     end
 
   end
