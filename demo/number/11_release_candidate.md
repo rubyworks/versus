@@ -4,7 +4,7 @@ The `release_candidate?` method returns `true` if the build
 is `rc`, otherwise `false`.
 
     check do |v|
-      v = DotRuby::Version::Number.parse(v)
+      v = Version::Number.parse(v)
       v.release_candidate?
     end
 

@@ -4,14 +4,14 @@ The Constraint class models a single version equality
 or inequality. It consists of the operator and the version
 number.
 
-    c = DotRuby::Version::Constraint.new(['>=', '1.0'])
+    c = Version::Constraint.new(['>=', '1.0'])
 
     c.operator == '>='
     c.number   == '1.0'
 
 ### Using []
 
-    c = DotRuby::Version::Constraint['>=', '1.0']
+    c = Version::Constraint['>=', '1.0']
 
     c.operator == '>='
     c.number   == '1.0'
@@ -22,7 +22,7 @@ The constraint constructor can also parse strings.
 
     check do |mp|
       mp.each do |str, (op, num)|
-        c = DotRuby::Version::Constraint.new(str)
+        c = Version::Constraint.new(str)
         c.operator.should    == op
         c.number.to_s.should == num
       end

@@ -3,7 +3,7 @@
 The Version::Number class can be thought of as a String.
 
     check do |v, s|
-      v = DotRuby::Version::Number.parse(v)
+      v = Version::Number.parse(v)
       v.to_str.assert == s
     end
 

@@ -6,41 +6,41 @@ is passed a symbol describing the type of bump to effect.
 
 ### Bump major number
 
-    v = DotRuby::Version::Number[1,0,0]
+    v = Version::Number[1,0,0]
     v.bump(:major).to_s == '2.0.0'
 
 ### Bump minor number
 
-    v = DotRuby::Version::Number[1,0,0]
+    v = Version::Number[1,0,0]
     v.bump(:minor).to_s == '1.1.0'
 
 ### Bump patch number
 
-    v = DotRuby::Version::Number[1,0,0]
+    v = Version::Number[1,0,0]
     v.bump(:patch).to_s == '1.0.1'
 
 ### Bump build number
 
-    v = DotRuby::Version::Number[1,0,0,0]
+    v = Version::Number[1,0,0,0]
     v.bump(:build).to_s == '1.0.0.1'
 
 ### Bump build number with state
 
-    v = DotRuby::Version::Number[1,0,0,'pre',1]
+    v = Version::Number[1,0,0,'pre',1]
     v.bump(:build).to_s == '1.0.0.pre.2'
 
 ### Bump state segment
 
-    v = DotRuby::Version::Number[1,0,0,'pre',2]
+    v = Version::Number[1,0,0,'pre',2]
     v.bump(:state).to_s == '1.0.0.rc.1'
 
 ### Bump last segment
 
-    v = DotRuby::Version::Number[1,0,0,'pre',3]
+    v = Version::Number[1,0,0,'pre',3]
     v.bump(:last).to_s == '1.0.0.pre.4'
 
 ### Reset State
 
-    v = DotRuby::Version::Number[1,0,0,'pre',2]
+    v = Version::Number[1,0,0,'pre',2]
     v.restate(:beta).to_s == '1.0.0.beta.1' 
 

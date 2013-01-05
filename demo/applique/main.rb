@@ -1,1 +1,1 @@
-require 'version'
+require 'versus'

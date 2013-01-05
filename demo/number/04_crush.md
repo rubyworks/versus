@@ -7,7 +7,7 @@ are merged with the following numerical segement.
 The Version::Number class will automatically reqcognize a *crushed*
 version if a segment of the version tuple is provided as such.
 
-    v = DotRuby::Version::Number.new(1,2,3,'alpha4')
+    v = Version::Number.new(1,2,3,'alpha4')
 
     v.assert.crush?
 

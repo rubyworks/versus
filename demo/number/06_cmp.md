@@ -7,8 +7,8 @@ all the common inequality methods.
 ### Equality
 
     check do |n1, n2|
-      v1 = DotRuby::Version::Number.parse(n1)
-      v2 = DotRuby::Version::Number.parse(n2)
+      v1 = Version::Number.parse(n1)
+      v2 = Version::Number.parse(n2)
       v1.should == v2
     end
 
@@ -18,8 +18,8 @@ all the common inequality methods.
 ### Greater-Than
 
     check do |n1, n2|
-      v1 = DotRuby::Version::Number.parse(n1)
-      v2 = DotRuby::Version::Number.parse(n2)
+      v1 = Version::Number.parse(n1)
+      v2 = Version::Number.parse(n2)
       v1.should > v2
     end
 
@@ -34,8 +34,8 @@ all the common inequality methods.
 ### Less-Than
 
     check do |n1, n2|
-      v1 = DotRuby::Version::Number.parse(n1)
-      v2 = DotRuby::Version::Number.parse(n2)
+      v1 = Version::Number.parse(n1)
+      v2 = Version::Number.parse(n2)
       v1.should < v2
     end
 
@@ -52,8 +52,8 @@ all the common inequality methods.
 ### Greater-Than-Or-Equal
 
     check do |n1, n2|
-      v1 = DotRuby::Version::Number.parse(n1)
-      v2 = DotRuby::Version::Number.parse(n2)
+      v1 = Version::Number.parse(n1)
+      v2 = Version::Number.parse(n2)
       v1.should >= v2
     end
 
@@ -67,8 +67,8 @@ all the common inequality methods.
 ### Less-Than-Or-Equal
 
     check do |n1, n2|
-      v1 = DotRuby::Version::Number.parse(n1)
-      v2 = DotRuby::Version::Number.parse(n2)
+      v1 = Version::Number.parse(n1)
+      v2 = Version::Number.parse(n2)
       v1.should <= v2
     end
 
@@ -82,8 +82,8 @@ all the common inequality methods.
 ### Approximate Constraint
 
     check do |n1, n2|
-      v1 = DotRuby::Version::Number.parse(n1)
-      v2 = DotRuby::Version::Number.parse(n2)
+      v1 = Version::Number.parse(n1)
+      v2 = Version::Number.parse(n2)
       v1.should =~ v2
     end
 
