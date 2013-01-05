@@ -1,0 +1,41 @@
+---
+type: ruby
+revision: 2013
+sources:
+- Index.yml
+authors:
+- name: trans
+  email: transfire@gmail.com
+- name: postmodern
+  website: http://trans.github.com
+organizations: []
+requirements:
+- groups:
+  - test
+  development: true
+  name: qed
+conflicts: []
+alternatives: []
+resources:
+- type: homepage
+  uri: http://dotruby.github.com
+  label: Homepage
+- type: source
+  uri: http://github.com/dotruby/version
+  label: Source Code
+repositories: []
+categories: []
+paths:
+  load:
+  - lib
+copyrights:
+- holder: Rubyworks
+  year: 2011
+  license: BSD-2-Clause
+name: versus
+title: Versus
+version: 0.1.0
+summary: Best-of-breed Version Class Library
+description: The Versus gem provides a solid Version class along with supporting functionality,
+  such as version constratints and version dependency resolution.
+date: '2013-01-05'
