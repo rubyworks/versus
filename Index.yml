@@ -18,6 +18,7 @@ description:
 
 requirements:
   - qed (test)
+  - ae  (test)
 
 authors:
   - name: trans
