@@ -1,7 +1,6 @@
-require 'version/file/plain_format'
-require 'version/file/jeweler_format'
-
 module Version
+  require 'versus/file/plain_format'
+  require 'versus/file/jeweler_format'
 
   # Version::File class
   #

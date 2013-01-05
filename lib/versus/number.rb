@@ -286,7 +286,6 @@ module Version
     #
     # FIXME: Ensure it can handle trailing state.
     def =~(other)
-p caller
       upver = other.bump(:last)
       #@segments >= other and @segments < upver
       self >= other and self < upver
@@ -455,12 +454,12 @@ p caller
       end
     end
 
-#    protected
+#  protected
 
     # Return the undelying segments array.
     attr :tuple
 
-    private
+  private
 
     # Convert a segment into an integer or string.
     def sane_point(point)      
@@ -468,6 +467,8 @@ p caller
       case point
       when Integer
         point
+      when /[.]/
+        point.split('.').map{ |p| sane_point(p) }
       when /^\d+$/
         point.to_i
       when /^(\d+)(\w+)(\d+)$/

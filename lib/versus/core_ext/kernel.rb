@@ -1,5 +1,7 @@
+require 'versus'
+
 module Kernel
-private
+  private
 
   #
   # If an arbitrary object need to be converted to a `Version::Number`, this is

@@ -1,4 +1,4 @@
-require 'version'
+require 'versus'
 
 class String
   #
