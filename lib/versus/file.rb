@@ -14,7 +14,6 @@ module Version
       VERSION
       VERSION.yml
       VERSION.yaml
-      meta/verison
       var/version
     }
 
