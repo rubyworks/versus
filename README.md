@@ -1,7 +1,7 @@
 [Homepage](http://rubyworks.github.com/versus) /
 [Report Issue](http://github.com/rubyworks/versus) /
 [Source Code](http://github.com/rubyworks/versus)
-( )
+( [![Build Status](https://travis-ci.org/rubyworks/versus.png)](https://travis-ci.org/rubyworks/versus) )
 
 
 # [Versus](http://rubyworks.github.com/versus)
