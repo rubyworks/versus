@@ -1,5 +1,9 @@
 ---
-script: "bundle exec qed"
+language: ruby
+script: "bundle exec $testcmd"
+env:
+  - testcmd="qed"
+  - testcmd="rubytest spec/"
 rvm:
   - 1.8.7
   - 1.9.2
