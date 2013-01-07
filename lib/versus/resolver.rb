@@ -6,7 +6,10 @@ module Version
   class Resolver
 
     #
+    # Initialize new Resolver.
     #
+    # @param [Array] available
+    #   List of name, version and requirements for each possible library.
     #
     def initialize(*available)
       @libraries = Hash.new{ |h,k| h[k] = {} }
@@ -22,7 +25,22 @@ module Version
     attr :libraries
 
     #
+    # List of library names and versions of failed resolutions
+    # subsequent to calling `#resolve`.
+    #
+    #attr :failures
+
+    #
     # Add available library.
+    #
+    # @param [String] name
+    #   The name of the library.
+    #
+    # @param [String,Version::Number] version
+    #   Version number of library.
+    #
+    # @param [Hash] requirements
+    #   Requirements for the library in the form of `{name=>version_constraint}`.
     #
     def add(name, version, requirements={})
       name     = name.to_s
@@ -68,6 +86,9 @@ module Version
       name   = name.to_s
       number = Number.parse(number)
 
+      @cache    = {}
+      @failures = []
+
       sheet = {}
 
       result = resolve_(name, number, sheet)
@@ -81,18 +102,47 @@ module Version
       result ? sheet : nil
     end
 
+    #
+    # Returns a mapping of unresolvable requirements. The key of the Hash is the 
+    # library that has the requirements and the value of the Hash is an Array
+    # of the requirements that could be not be found in the library list.
+    #
+    # @return [Hash] Unresolved requirements
+    #
+    def unresolved
+      list = Hash.new{ |h,k| h[k] = [] }
+      @failures.each do |name, number|
+        requirements(name, number).each do |rname, rnumber|
+          list[[name,number]] << [rname, rnumber] if possibilities(rname, rnumber.to_s).empty?
+        end
+      end
+      list
+    end
+
   private
 
     #
     #
     #
     def resolve_(name, number, sheet={})
+      # prevent infinite recursion
+      return sheet if @cache[[name,number]]
+      @cache[[name,number]] = true
+
       return false unless settle(name, number, sheet)
 
-      potents = requirements(name, number).map do |(n, c)|
+      requirements = requirements(name, number)
+
+      # there are no requirements to resolve
+      return sheet if requirements.empty?
+
+      # what possibilites exist for resolving all the requirements
+      potents = requirements.map do |(n, c)|
                   possibilities(n,c)
                 end
 
+      # TODO: I think this might be a mistake, if there are no possibilities then is it not
+      #       a failed resolution? Consider adding to failures and returning false instead.
       return sheet if potents.empty?
 
       vectors = product(*potents)
@@ -101,7 +151,19 @@ module Version
                   resolve_vector(vector, sheet)
                 end
 
+      unless success
+        @failures << [name, number] unless @failures.include?([name, number])
+      end
+
       return success
+    end
+
+    #
+    #
+    #
+    def cached(name, number, sheet)
+      @cache[[name, number]] = true
+      sheet
     end
 
     #
