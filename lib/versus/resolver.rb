@@ -347,7 +347,7 @@ module Version
           else
             most = c
           end
-        when '=~'
+        when '=~', '~>'
           # TODO
         end
       end

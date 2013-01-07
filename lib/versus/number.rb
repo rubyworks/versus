@@ -287,7 +287,11 @@ module Version
     # FIXME: Ensure it can handle trailing state.
     def =~(other)
       upver = other.bump(:last)
-      #@segments >= other and @segments < upver
+      if other.size > 1
+        upver = other.bump(-2)
+      else
+
+      end
       self >= other and self < upver
     end
 
@@ -333,7 +337,11 @@ module Version
     #   #=> "1.3.0.rc.1"
     #
     def bump(which=:patch)
-      case which.to_sym
+      which = which.to_sym unless Integer === which
+
+      case which
+      when Integer
+        bump_at(which)
       when :major, :first
         bump_major
       when :minor
@@ -349,6 +357,7 @@ module Version
       when :last
         bump_last
       else
+        # TODO: why is this not an error?
         self.class.new(@tuple.dup.compact)
       end
     end
@@ -366,6 +375,16 @@ module Version
     #
     def bump_patch
       self.class[major, minor, inc(patch)]
+    end
+
+    #
+    def bump_at(index)
+      i = index
+      if n = inc(@tuple[i])
+        v = @tuple[0...i] + [n] + (@tuple[i+1] ? [1] : [])
+      else
+        v = @tuple[0...i]
+      end
     end
 
     #
