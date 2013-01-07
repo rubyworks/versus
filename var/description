@@ -1,0 +1,3 @@
+The Versus gem provides a solid Version class along with supporting
+functionality, such as version constratints and version dependency
+resolution.
