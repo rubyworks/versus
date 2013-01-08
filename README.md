@@ -12,9 +12,9 @@ The Versus gem is a best-of-breed version number class library, providing classe
 for a variety of version related requirements.
 
 
-## Overview
+## [Overview](#overview)
 
-### Version::Number
+### Version::Number(#number)
 
 The primary class of the Versus gem is the `Version::Number` class. It does
 exactly what one would expect, by taking a version literal and giving it a
@@ -39,7 +39,7 @@ The Version::Number class has a number of useful methods, such as #satisfy.
     v.satisfy?("> 1.0")
 ```
 
-### Version::Constraint
+### [Version::Constraint](#constraint)
 
 Versus also provides a standalone constraint class.
 
@@ -53,19 +53,19 @@ Then versions can be tested against the constraint.
     c.satisfy?("1.2.1")
 ```
 
-### Version::Resolver
+### [Version::Resolver](#resolver)
 
 The `Version::Resolver` class is a powerful tool for taking a set of interdpendent
 named version requirements and resolving them for the best solution.
 
 
-### Version::File
+### [Version::File](#file)
 
 A `Version::File` class is provided to reading and parsing the typical project VERSION file.
 
 
 
-## Documentation
+## [Documentation](#documentation)
 
 Versus uses QED to provided tested [demonstrations](http://). This provides a end-user 
 acceptance testing while also providing very readable documentation.
@@ -73,7 +73,7 @@ acceptance testing while also providing very readable documentation.
 For API documentation checkout the YARD generated docs at [RubyDoc.Info](http://rubydoc.info/gems/versus/frames).
 
 
-## Copyrights
+## [Copyrights](#copyrights)
 
 Versus is copyrighted open source software.
 
