@@ -37,13 +37,13 @@ describe Version::Resolver do
     result.assert == { 'foo'=>Version['1.0.0'], 'bar'=>Version['2.0.0'], 'baz'=>Version['3.2.0'] }
   end
 
-  #it "does not infinitely recurse" do
-  #  resolver = Version::Resolver.new
-  #  resolver.add('foo', '1.0.0', 'bar'=>'>= 1.0.0')
-  #  resolver.add('bar', '1.0.0', 'foo'=>'>= 1.0.0')
-  #  result = resolver.resolve('foo', '1.0.0')
-  #  result.assert == {'foo'=>Version['1.0.0'], 'bar'=>Version['1.0.0']}
-  #end
+  it "does not infinitely recurse" do
+    resolver = Version::Resolver.new
+    resolver.add('foo', '1.0.0', 'bar'=>'>= 1.0.0')
+    resolver.add('bar', '1.0.0', 'foo'=>'>= 1.0.0')
+    result = resolver.resolve('foo', '1.0.0')
+    result.assert == {'foo'=>Version['1.0.0'], 'bar'=>Version['1.0.0']}
+  end
 
 end
 
