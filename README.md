@@ -8,12 +8,13 @@
 
 *A Best-of-Breed Version Class Library*
 
-The Versus gem is a best-of-breed Version class library, providing classes
-for a number of version related requirements, form `Version::Number` to
-`Version::Resolution`.
+The Versus gem is a best-of-breed version number class library, providing classes
+for a variety of version related requirements.
 
 
 ## Overview
+
+### Version::Number
 
 The primary class of the Versus gem is the `Version::Number` class. It does
 exactly what one would expect, by taking a version literal and giving it a
@@ -25,6 +26,43 @@ versitle interface to query and manipulate.
     v.minor  #=> 2
     v.patch  #=> 0
 ```
+
+The constructor can also take a tuple and `#[]` is provided as a convenience alias.
+
+```ruby
+    v = Version::Number[1,2,0]
+```
+
+The Version::Number class has a number of useful methods, such as #satisfy.
+
+```ruby
+    v.satisfy?("> 1.0")
+```
+
+### Version::Constraint
+
+Versus also provides a standalone constraint class.
+
+```ruby
+    c = Version::Constraint.new("~> 1.2.0")
+```
+
+Then versions can be tested against the constraint.
+
+```ruby
+    c.satisfy?("1.2.1")
+```
+
+### Version::Resolver
+
+The `Version::Resolver` class is a powerful tool for taking a set of interdpendent
+named version requirements and resolving them for the best solution.
+
+
+### Version::File
+
+A `Version::File` class is provided to reading and parsing the typical project VERSION file.
+
 
 
 ## Documentation
