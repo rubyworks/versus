@@ -14,7 +14,7 @@ for a variety of version related requirements.
 
 ## [Overview](#overview)
 
-### Version::Number(#number)
+### Version Number
 
 The primary class of the Versus gem is the `Version::Number` class. It does
 exactly what one would expect, by taking a version literal and giving it a
@@ -27,19 +27,19 @@ versitle interface to query and manipulate.
     v.patch  #=> 0
 ```
 
-The constructor can also take a tuple and `#[]` is provided as a convenience alias.
+The constructor can also take a tuple and `#[]` is provided as a convenient alias.
 
 ```ruby
     v = Version::Number[1,2,0]
 ```
 
-The Version::Number class has a number of useful methods, such as #satisfy.
+The Version::Number class has a number of useful methods, such as `#satisfy`.
 
 ```ruby
     v.satisfy?("> 1.0")
 ```
 
-### [Version::Constraint](#constraint)
+### Version Constraint
 
 Versus also provides a standalone constraint class.
 
@@ -53,13 +53,13 @@ Then versions can be tested against the constraint.
     c.satisfy?("1.2.1")
 ```
 
-### [Version::Resolver](#resolver)
+### Version Resolver
 
 The `Version::Resolver` class is a powerful tool for taking a set of interdpendent
 named version requirements and resolving them for the best solution.
 
 
-### [Version::File](#file)
+### Version File
 
 A `Version::File` class is provided to reading and parsing the typical project VERSION file.
 
