@@ -29,8 +29,8 @@ end
 module Setup
   META_EXTENSION_DIR = '.setup'
   FILETYPES = %w( bin lib ext data etc man doc )
-  INSTALL_RECORD = 'setup.receipt'
-  CONFIG_FILE    = 'setup.config'
+  INSTALL_RECORD = '.setup/installed_files'
+  CONFIG_FILE    = '.setup/config.yml'
 end
 module Setup
   class Project
