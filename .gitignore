@@ -1,4 +1,6 @@
 .reap/digest
+.setup/installed_files
+.setup/config.yml
 .yardoc
 log
 doc
