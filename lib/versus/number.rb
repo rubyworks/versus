@@ -473,6 +473,17 @@ module Version
       end
     end
 
+    #
+    # Does this version satisfy the given constraints?
+    #
+    def satisfy?(*constraints)
+      constraints.all? do |c|
+        #c = ::Version::Constraint.parse(constraint)
+        #send(c.operator, c.number)
+        Constraint.constraint_lambda(c).call(self)
+      end
+    end
+
 #  protected
 
     # Return the undelying segments array.
